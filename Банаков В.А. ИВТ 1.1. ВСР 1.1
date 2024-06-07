@@ -1,0 +1,55 @@
+Для реализации умножения матриц с использованием Cython создадим файл `matrix_mult.pyx`:
+
+```python
+#cython: boundscheck=False
+
+cimport numpy as np
+import numpy as np
+
+cpdef np.ndarray[np.float64_t, ndim=2] matrix_mult(np.ndarray[np.float64_t, ndim=2] A, np.ndarray[np.float64_t, ndim=2] B):
+    cdef int rows_A = A.shape[0]
+    cdef int cols_A = A.shape[1]
+    cdef int cols_B = B.shape[1]
+    
+    cdef np.ndarray[np.float64_t, ndim=2] C = np.zeros((rows_A, cols_B))
+    
+    cdef int i, j, k
+    
+    for i in range(rows_A):
+        for j in range(cols_B):
+            for k in range(cols_A):
+                C[i, j] += A[i, k] * B[k, j]
+                
+    return C
+```
+
+Затем создадим файл `setup.py` для компиляции Cython модуля:
+
+```python
+from distutils.core import setup
+from Cython.Build import cythonize
+import numpy as np
+
+setup(
+    ext_modules = cythonize("matrix_mult.pyx"),
+    include_dirs = [np.get_include()]
+)
+```
+
+Теперь мы можем скомпилировать Cython модуль, используя команду `python setup.py build_ext --inplace`. После этого можно импортировать функцию `matrix_mult` из `matrix_mult` модуля и использовать её для умножения матриц.
+
+```python
+import numpy as np
+from matrix_mult import matrix_mult
+import time
+
+# Генерация случайных матриц
+A = np.random.rand(100, 100)
+B = np.random.rand(100, 100)
+
+start_time = time.time()
+C = matrix_mult(A, B)
+end_time = time.time()
+
+print("Time taken: %s seconds" % (end_time - start_time))
+```
