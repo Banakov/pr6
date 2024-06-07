@@ -1,0 +1,37 @@
+# Решение
+
+Ниже приведен пример программы на Python, которая выполняет подсчет слов в тексте и вычисляет размер каждого слова. Результаты подсчета возвращаются с использованием механизма генераторов.
+
+```python
+def word_count(text):
+    words = text.split()
+    for word in words:
+        yield word, len(word)
+
+# Пример использования
+text = "This is a sample text for word count"
+word_counter = word_count(text)
+for word, length in word_counter:
+    print(f"Word: {word}, Length: {length}")
+Тесты
+Для тестирования программы можно использовать следующий набор тестов:
+
+def test_word_count():
+    text = "Python is a popular programming language"
+    word_counter = word_count(text)
+    result = [(word, length) for word, length in word_counter]
+    assert result == [('Python', 6), ('is', 2), ('a', 1), ('popular', 7), ('programming', 11), ('language', 8)]
+
+    text = "Hello world"
+    word_counter = word_count(text)
+    result = [(word, length) for word, length in word_counter]
+    assert result == [('Hello', 5), ('world', 5)]
+
+    text = "One, two, three"
+    word_counter = word_count(text)
+    result = [(word, length) for word, length in word_counter]
+    assert result == [('One,', 4), ('two,', 4), ('three', 5)]
+
+    print("All tests passed successfully.")
+
+test_word_count()
