@@ -1,0 +1,37 @@
+# Решение
+
+Для написания программы, которая позволяет пользователю вводить число от 0 до 9 и выводить его название, а также преобразовывать число в указанную систему исчисления (бинарную, восьмеричную или шестнадцатеричную), можно использовать следующий код на языке Python.
+
+1. Установка необходимых библиотек:
+```bash
+pip install click
+Пример кода программы:
+import click
+
+@click.command()
+@click.argument('number', type=click.IntRange(0, 9))
+@click.option('--type', type=click.Choice(['bin', 'oct', 'hex']))
+def convert_number(number, type):
+    numbers_dict = {
+        0: 'ноль', 1: 'один', 2: 'два',
+        3: 'три', 4: 'четыре', 5: 'пять',
+        6: 'шесть', 7: 'семь', 8: 'восемь', 9: 'девять'
+    }
+    
+    if type:
+        if type == 'bin':
+            converted_number = bin(number)[2:]
+        elif type == 'oct':
+            converted_number = oct(number)[2:]
+        elif type == 'hex':
+            converted_number = hex(number)[2:]
+            
+        click.echo(f'{converted_number}')
+    else:
+        click.echo(f'{number} - {numbers_dict[number]}')
+
+if __name__ == '__main__':
+    convert_number()
+
+Для преобразования в бинарную, восьмеричную или шестнадцатеричную форму добавьте параметр --type bin , --type oct или --type hex соответственно.
+Программа позволит пользователю взаимодействовать с числами, их названиями, а также преобразовывать числа в различные системы счисления исходя из введенных параметров.
