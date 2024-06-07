@@ -1,0 +1,32 @@
+# Решение
+
+Для реализации графического интерфейса программы, которая будет создавать изображения флагов и сохранять их в формате SVG с помощью библиотеки `svgwrite`, можно использовать библиотеку `Tkinter` для создания GUI и `svgwrite` для создания и сохранения SVG изображений.
+
+
+```python
+import tkinter as tk
+import svgwrite
+
+def create_flag():
+    flag_width = 200
+    flag_height = 100
+    flag_color = flag_color_entry.get()
+    
+    dwg = svgwrite.Drawing('flag.svg', profile='tiny', size=(f'{flag_width}px', f'{flag_height}px'))
+    dwg.add(dwg.rect((0, 0), (flag_width, flag_height), fill=flag_color))
+    dwg.save()
+
+# Создание GUI
+root = tk.Tk()
+root.title('Flag Creator')
+
+flag_color_label = tk.Label(root, text='Flag Color:')
+flag_color_label.pack()
+
+flag_color_entry = tk.Entry(root)
+flag_color_entry.pack()
+
+create_button = tk.Button(root, text='Create Flag', command=create_flag)
+create_button.pack()
+
+root.mainloop()
